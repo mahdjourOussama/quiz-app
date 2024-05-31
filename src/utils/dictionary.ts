@@ -1,11 +1,31 @@
 export const dictionary: Record<string, any> = {
   navbar: {
-    title: "جمعية العلماء الشباب",
+    title: " جمعية مالك بن نبي",
   },
   table: {
-    id: "الرقم",
+    id: "اسم غامض",
     name: "الاسم",
     score: "النقاط",
     placement: "الترتيب",
+    math: "الرياضيات",
+    science: "العلوم",
+    art: "الثقافة",
+    islamic: "التربية الاسلامية",
+    arabic: "اللغة العربية",
+    theater: "مسرح",
+    presentation: "عرض",
+    quoran: "قرآن",
+    songs: "أناشيد",
+    time: "الوقت والابداع",
+  },
+  calculate_position: "حساب الترتيب",
+  clear_data: "مسح البيانات",
+  save_data: "حفظ البيانات",
+  cript_names: "تشفير الاسماء",
+  uncript_names: "فك تشفير الاسماء",
+  compitions: {
+    individuals: "الطفل المفكر",
+    teams_sciences: "كأس مالك بن نبي للتفوق العلمي",
+    teams_arts: "كأس مالك بن نبي للابداع الثقافي",
   },
 };
