@@ -1,6 +1,5 @@
 import { dictionary } from "@/utils/dictionary";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   return (

@@ -23,6 +23,9 @@ export function randomize(
   participant: TParticipant,
   compition: TCompitionsID
 ): TParticipant {
+  if (typeof window === "undefined") {
+    return participant;
+  }
   const available =
     localStorage.getItem(`${compition}_available`)?.split(",") ||
     Array.from(
@@ -44,16 +47,25 @@ export function randomize(
 }
 
 export function saveData(data: TParticipant[], key: string) {
+  if (!key || typeof window === "undefined") {
+    return;
+  }
   localStorage.setItem(key, JSON.stringify(data));
 }
 
 export function loadData(key: string): TParticipant[] | null {
+  if (!key || typeof window === "undefined") {
+    return null;
+  }
   const data = localStorage.getItem(key);
   if (!data) return null;
   return JSON.parse(data);
 }
 
 export function clearData(key: string) {
+  if (!key || typeof window === "undefined") {
+    return;
+  }
   localStorage.removeItem(key);
   localStorage.removeItem(`${key}_available`);
 }

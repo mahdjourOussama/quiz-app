@@ -13,14 +13,13 @@ import {
 } from "@/utils/helper";
 import { TParticipant } from "@/utils/types";
 export default function Home() {
-  const compition = compitions.find(
-    (compition) => compition.id === useParams().id
-  );
-  if (!compition) return null;
+  const id = useParams().id;
+  const compition = compitions.find((compition) => compition.id === id);
   const [data, setData] = useState<TParticipant[]>(
-    compition.participants || []
+    compition?.participants || []
   );
   const router = useRouter();
+  if (!compition) return null;
   function updateScore(
     score: number,
     item: TParticipant,
@@ -39,26 +38,26 @@ export default function Home() {
           : i
       );
 
-    const newData = subjectIndex
-      ? data.map((i) =>
-          i.id === item.id
-            ? calculateTotalScore({
-                ...item,
-                subjects: item.subjects?.map((sub, i) =>
-                  i === subjectIndex ? { ...sub, score: score } : sub
-                ),
-              })
-            : i
-        )
-      : data.map((i) =>
-          i.id === item.id
-            ? {
-                ...i,
-                score: score,
-              }
-            : i
-        );
-    console.log(newData);
+    const newData =
+      subjectIndex !== undefined
+        ? data.map((i) =>
+            i.id === item.id
+              ? calculateTotalScore({
+                  ...item,
+                  subjects: item.subjects?.map((sub, i) =>
+                    i === subjectIndex ? { ...sub, score: score } : sub
+                  ),
+                })
+              : i
+          )
+        : data.map((i) =>
+            i.id === item.id
+              ? {
+                  ...i,
+                  score: score,
+                }
+              : i
+          );
     return newData;
   }
 
@@ -196,7 +195,6 @@ export default function Home() {
                       className='text-center '
                       value={item.score}
                       onChange={(e) => {
-                        console.log(e.target.value, item);
                         let score = parseFloat(e.target.value);
                         const newData = updateScore(score, item);
                         setData(newData);
