@@ -8,13 +8,21 @@ export type TCompition = {
 export type TParticipant = {
   id: string;
   name: string;
-  cripticName: string;
   score: number;
-  subjects?: {
-    name: string;
-    score: number;
-  }[];
-  placement: number | null;
-  anonymized?: boolean;
+  oral_score: number;
+  written_score: number;
+  placement: number;
+  code?: string;
+  school: string;
 };
-export type TCompitionsID = "individuals" | "teams_sciences" | "teams_arts";
+export type TStudent = {
+  name: string;
+  school: string;
+};
+export type TCompitionsID =
+  | "hafiz_lokman_lvl1"
+  | "hafiz_lokman_lvl2"
+  | "hafiz_lokman_lvl3"
+  | "hafiz_elnour"
+  | "hafiz_youcef"
+  | "readers";

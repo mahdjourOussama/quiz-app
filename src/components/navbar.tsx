@@ -1,19 +1,87 @@
-import { dictionary } from "@/utils/dictionary";
+"use client";
 import Image from "next/image";
 
-export default function Navbar() {
+import { ThemeSwitch } from "@/components/ThemeSwitch";
+import { LanguageSwitch } from "@/components/LanguageSwitch";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { ChevronLeft, ChevronRight, MenuIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { usePathname, useParams, useRouter } from "next/navigation";
+import { Button } from "./ui/button";
+export function Navbar() {
+  const t = useTranslations();
+  const { locale, id } = useParams();
+  const path = usePathname();
+  const router = useRouter();
   return (
     <div className=' w-full flex h-16 items-center justify-between p-4'>
-      <Image src='/logo.png' alt='logo' width={50} height={50} />
-      <h1 className='text-4xl font-bold'>{dictionary.navbar.title}</h1>
-      <h1 suppressHydrationWarning>
-        {new Date().toLocaleDateString("ar", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
+      <Image
+        src='/images/palastine-2.svg'
+        alt='logo'
+        width={70}
+        height={40}
+        onClick={() => router.replace("/" + locale)}
+      />
+
+      <h1 className='text-4xl font-bold'>
+        {typeof id === "string" ? t(id) : t("title")}
       </h1>
+      <div className=' gap-4 items-center  hidden md:flex '>
+        <ThemeSwitch />
+        <LanguageSwitch />
+        {path !== `/${locale}` && (
+          <Button
+            variant='ghost'
+            size='lg'
+            onClick={() => router.back()}
+            className='flex items-center gap-2'
+          >
+            <span className='text-xl'>{t("back")}</span>
+            {locale === "ar" ? (
+              <ChevronLeft className='h-6 w-6' />
+            ) : (
+              <ChevronRight className='h-6 w-6' />
+            )}
+          </Button>
+        )}
+      </div>
+      <div className='md:hidden flex items-center gap-4'>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <MenuIcon />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <div className='flex justify-center items-center gap-4 w-full'>
+                <ThemeSwitch />
+                <LanguageSwitch />
+              </div>
+            </DropdownMenuItem>
+            {path !== `/${locale}` && (
+              <DropdownMenuItem>
+                <Button
+                  variant='ghost'
+                  size='lg'
+                  onClick={() => router.back()}
+                  className='flex items-center gap-2 w-full'
+                >
+                  <span className='text-xl w-full text-center'>
+                    {t("back")}
+                  </span>
+                </Button>
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </div>
   );
 }

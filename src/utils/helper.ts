@@ -3,9 +3,9 @@ import { compitions } from "./data";
 import { TCompitionsID, TParticipant } from "./types";
 
 export function calculateTotalScore(participant: TParticipant): TParticipant {
-  if (!participant.subjects) return participant;
-  const total = participant.subjects.reduce((acc, item) => acc + item.score, 0);
-  return { ...participant, score: total / participant.subjects.length };
+  if (!participant.oral_score || !participant.written_score) return participant;
+  const total = participant.oral_score + participant.written_score;
+  return { ...participant, score: total / 2 };
 }
 
 export function calculatePosition(
@@ -15,37 +15,33 @@ export function calculatePosition(
   return participants
     .sort((a, b) => b.score - a.score)
     .map((item, index) => {
-      return { ...item, placement: index + 1, anonymized: false };
+      return { ...item, placement: index + 1 };
     });
 }
+const usedCodes = getUsedCodes() || new Set<string>();
 
-export function randomize(
-  participant: TParticipant,
-  compition: TCompitionsID
-): TParticipant {
-  if (typeof window === "undefined") {
-    return participant;
-  }
-  const available =
-    localStorage.getItem(`${compition}_available`)?.split(",") ||
-    Array.from(
-      {
-        length:
-          compitions.find((c) => c.id === compition)?.participants.length ?? 0,
-      },
-      (_, i) => i + 1
-    ) ||
-    [];
-  console.log("available", available);
-  if (available.length === 0 || participant.anonymized) return participant;
-  const index = Math.floor(Math.random() * available.length);
-  const [random] = available.splice(index, 1);
-  participant.cripticName = ` مشارك غامض ${random} `;
-  participant.anonymized = true;
-  localStorage.setItem(`${compition}_available`, available.join(","));
-  return participant;
+export function generateUniqueCode(): string {
+  const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let code = "";
+  do {
+    code = Array.from(
+      { length: 4 },
+      () => charset[Math.floor(Math.random() * charset.length)]
+    ).join("");
+  } while (usedCodes.has(code));
+  usedCodes.add(code);
+  saveUsedCodes(usedCodes);
+  return code;
 }
 
+function getUsedCodes(): Set<string> {
+  const stored = localStorage.getItem("usedCodes");
+  return stored ? new Set(JSON.parse(stored)) : new Set();
+}
+
+function saveUsedCodes(codes: Set<string>) {
+  localStorage.setItem("usedCodes", JSON.stringify(Array.from(codes)));
+}
 export function saveData(data: TParticipant[], key: string) {
   if (!key || typeof window === "undefined") {
     return;

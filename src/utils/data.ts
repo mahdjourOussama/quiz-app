@@ -1,119 +1,113 @@
 import { loadData } from "./helper";
-import { TCompition, TParticipant } from "./types";
-const studentsNames = [
-  "زغمار أنفال",
-  "بودبغة انيس أحمد ",
-  "عماري براء الدين ",
-  "خلفون مرام ",
-  "بوحرابة هبة ",
-  "بطلي تسنيم ",
-  "بلعقون شيماء ",
-  "خطاب ريم ",
-  "خطاب رنيم ",
-  "بركان نور اليقين ",
-  "بن العلمي علاء الدين ",
-  "سعداوي عمار ",
-  "شايب عبد المؤمن ",
-  "جندلي نور سين ",
-  "بن قارة ميس ",
-  "مزياني أحمد راشد ",
-  "جندلي معتصم بالله ",
-  "يوزيتونة سجي ",
-  "معلم جنى ",
-  "عصفور رحمة ",
-  "حمادوش نسرين ",
-  "يوترعة سرين ",
-  "بوزيرة اويس",
-  "بن خلاف نور هدى",
-  "غرفي محمد مهدي ",
-  "لحمر محمد ساجد ",
-  "لحول عبد المؤمن",
-  "زبيري بيان",
-  "رجال آدم مذير",
-  "رواس هديل نوران",
-  "حمادة سلين حورية ",
+import { TCompition, TCompitionsID, TParticipant, TStudent } from "./types";
+
+const compitionsNames: TCompitionsID[] = [
+  "hafiz_lokman_lvl1",
+  "hafiz_lokman_lvl2",
+  "hafiz_lokman_lvl3",
+  "hafiz_elnour",
+  "hafiz_youcef",
+  "readers",
 ];
-const scienceTeamsNames = [
-  " ربيعي أحمد",
-  "بلكحل لعروسي ",
-  "الشيخ بيوض ",
-  "سعدي العربي ",
-  "معاوي عمار ",
-];
-const artsTeamsNames = [
-  " عابد إبراهيم",
-  "غضبان الخميسي",
-  "تبيب بشير ",
-  "بالعشار عمار",
-  "عين النحاس",
-];
-export const students: TParticipant[] =
-  loadData("individuals") ||
-  studentsNames.map((name, i) => {
-    return {
-      name: name,
-      id: name + i,
-      cripticName: "",
-      score: 0,
-      placement: null,
-    } as TParticipant;
-  });
-export const scienceTeams: TParticipant[] =
-  loadData("teams_sciences") ||
-  scienceTeamsNames.map((name, i) => {
-    return {
-      name: name,
-      id: name + i,
-      score: 0,
-      cripticName: "",
-      subjects: [
-        { name: "math", score: 0 },
-        { name: "science", score: 0 },
-        { name: "arabic", score: 0 },
-        { name: "islamic", score: 0 },
-        { name: "art", score: 0 },
-      ],
-      placement: null,
-    } as TParticipant;
-  });
-export const artsTeams: TParticipant[] =
-  loadData("teams_arts") ||
-  artsTeamsNames.map((name, i) => {
-    return {
-      name: name,
-      cripticName: "",
-      id: name + i,
-      score: 0,
-      subjects: [
-        { name: "quoran", score: 0 },
-        { name: "theater", score: 0 },
-        { name: "songs", score: 0 },
-        { name: "presentation", score: 0 },
-        { name: "time", score: 0 },
-      ],
-      placement: null,
-    } as TParticipant;
-  });
-export const compitions: TCompition[] = [
-  {
-    title: "individuals",
-    logo: "/images/individuals.png",
-    link: "/compition/individuals",
-    id: "individuals",
-    participants: students,
-  },
-  {
-    title: "teams_arts",
-    logo: "/images/arts.png",
-    link: "/compition/teams_arts",
-    id: "teams_arts",
-    participants: artsTeams,
-  },
-  {
-    title: "teams_sciences",
-    logo: "/images/science.png",
-    link: "/compition/teams_sciences",
-    id: "teams_sciences",
-    participants: scienceTeams,
-  },
-];
+
+const studentsNames: { [key: string]: TStudent[] } = {
+  hafiz_lokman_lvl1: [
+    { name: "سهتال روان", school: "سعدي العربي " },
+    { name: "بوقفة ضحى", school: "المدرسة القرآنية عبد الحميد بن باديس" },
+    { name: "قارة سراج عبد الصمد", school: "ابتدائية عطاف احمد" },
+    { name: "جبلون محمد لقمان", school: "سعدي العربي" },
+    { name: "بوقفة نور ايلاف", school: "سعدي العربي" },
+    { name: "توهامي عبد المؤمن", school: "سعدي العربي" },
+    { name: "فراشي سلسبيل", school: "بطلي ساعد" },
+    { name: "عيايدية الين جوري ", school: "سعدي العربي" },
+  ],
+  hafiz_lokman_lvl2: [
+    { name: "قارة اريج ميرال", school: "ابتدائية عطاف احمد" },
+    {
+      name: "بوكبوس هاجر",
+      school: "حناشي العايب",
+    },
+    {
+      name: "قايدي عبد الحسيب",
+      school: "حناشي العايب",
+    },
+    { name: "بركان غفران", school: "حناشي العايب" },
+    {
+      name: "بوشريبة ألاء",
+      school: "سفاري حسين",
+    },
+  ],
+  hafiz_lokman_lvl3: [
+    { name: "مزيلي رتاج", school: "حناشي العايب" },
+    { name: "لزغد اسراء", school: "بلعشار عمار" },
+    { name: "بن غنيسة اسراء", school: "سعدي العربي" },
+    { name: "بن قارة ميس", school: "مدرسة تبيب بشير" },
+    { name: "طلحة اسيل", school: "عيمن علي حامة بوزيان" },
+    { name: "شايب عبد المؤمن", school: "مدرسة إبراهيم بيوض" },
+    { name: "قايدي عائشة", school: "حناشي العايب" },
+    { name: "فراشي سندس ", school: "بطلي ساعد " },
+    { name: "بوغلوط احمد يحي", school: "مدرسة حناشي العايب" },
+    { name: "بركان نور اليقين", school: "مدرسة بلعشار عمار " },
+    { name: "سايحي الياس", school: "مدرسة بطلي ساعد" },
+    { name: "بن خلاف نور الهدى", school: "مدرسة عين النحاس " },
+    { name: "تومي تيماء", school: "سعدي العربي" },
+    { name: "بن صيد محمد اياد", school: "سفاري حسين" },
+    { name: "بورويسة امجد عبد المجيب", school: "سفاري حسين " },
+  ],
+  hafiz_youcef: [
+    { name: " يعلاوي مروة", school: "بلعشار عمار" },
+    { name: "يعلاوي اميمة", school: "عقون عبد المجيد" },
+    { name: "العرفي ملاك", school: "إبراهيم بلحمدي" },
+    { name: "باهي عبد الجبار", school: "شيهاني بشير" },
+    { name: "معتز بالله وقرور", school: "بوتفاح محمد الصالح " },
+    { name: "لجين زوربي", school: "متوسطة صالح دراجي" },
+  ],
+  hafiz_elnour: [
+    { name: "ماجد دردور", school: "متوسطة الاخوة بوسالم" },
+    { name: "سهتال يوسف عبد الجليل", school: "متوسطة صالح دراجي" },
+    { name: "توهامي رونق", school: "متوسطة صالح دراجي" },
+    { name: "بوديسة شهاب", school: "متوسطة قربوعة عبد الحميد" },
+    { name: "بن لخلف اسيل", school: "بوتفاح محمد الصالح" },
+    { name: "جندلي سيلين", school: "متوسطة صالح دراجي" },
+    { name: "محيمود ملاك", school: "متوسطة علي منجلي" },
+  ],
+  readers: [
+    { name: "العرفي ملاك", school: "إبراهيم بلحمدي" },
+    { name: "طلحة اسيل", school: "عيمن علي حامة بوزيان" },
+    { name: "بن قارة ميس", school: "مدرسة تبيب بشير" },
+    { name: "قارة اريج ميرال", school: "ابتدائية عطاف احمد" },
+    { name: "قارة سراج عبد الصمد", school: "ابتدائية عطاف احمد" },
+    { name: "فرجيوي ميار", school: "مدرسة بطلي ساعد" },
+    { name: "بولبردعة شام", school: "مدرسة بطلي ساعد" },
+    { name: "سعداوي عمار", school: "مدرسة بيوض" },
+    { name: "عيداوي ابتهال ليان", school: "حناشي العايب" },
+    { name: "غلوسي هبة عبد الرحمان", school: "عبد المالك رمضان" },
+    { name: "العرفي شهد", school: "عابد إبراهيم" },
+    { name: "بن غنيسة اسراء", school: "سعدي العربي " },
+    { name: "بن جميلة نرمين", school: "سفاري حسين" },
+    { name: "مصباح تقاء", school: "سفاري حسين" },
+    { name: "بن يحوب سجى", school: "سفاري حسين" },
+  ],
+};
+
+export const compitions: TCompition[] = compitionsNames.map((name) => {
+  return {
+    title: name,
+    logo: `/images/${name}.png`,
+    link: `/compition/${name}`,
+    id: name,
+    participants:
+      loadData(name) ||
+      studentsNames[name].map((student, i) => {
+        return {
+          name: student.name,
+          school: student.school,
+          id: student.name + i,
+          score: 0,
+          oral_score: 0,
+          written_score: 0,
+          placement: 0,
+        };
+      }),
+  };
+});
