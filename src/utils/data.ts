@@ -10,7 +10,7 @@ const compitionsNames: TCompitionsID[] = [
   "readers",
 ];
 
-const studentsNames: { [key: string]: TStudent[] } = {
+const studentsNames: Record<TCompitionsID, TStudent[]> = {
   hafiz_lokman_lvl1: [
     { name: "سهتال روان", school: "سعدي العربي " },
     { name: "بوقفة ضحى", school: "المدرسة القرآنية عبد الحميد بن باديس" },

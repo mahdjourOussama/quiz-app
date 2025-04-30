@@ -18,30 +18,58 @@ export function calculatePosition(
       return { ...item, placement: index + 1 };
     });
 }
-const usedCodes = getUsedCodes() || new Set<string>();
+const usedCodes: Record<TCompitionsID, Set<string>> = getUsedCodes();
 
-export function generateUniqueCode(): string {
-  const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  let code = "";
-  do {
-    code = Array.from(
-      { length: 4 },
-      () => charset[Math.floor(Math.random() * charset.length)]
-    ).join("");
-  } while (usedCodes.has(code));
-  usedCodes.add(code);
-  saveUsedCodes(usedCodes);
-  return code;
-}
-
-function getUsedCodes(): Set<string> {
+function getUsedCodes(): Record<TCompitionsID, Set<string>> {
   const stored = localStorage.getItem("usedCodes");
-  return stored ? new Set(JSON.parse(stored)) : new Set();
+  if (!stored)
+    return {
+      hafiz_elnour: new Set(),
+      hafiz_youcef: new Set(),
+      readers: new Set(),
+      hafiz_lokman_lvl1: new Set(),
+      hafiz_lokman_lvl2: new Set(),
+      hafiz_lokman_lvl3: new Set(),
+    };
+  const parsed = JSON.parse(stored);
+  const result: Record<TCompitionsID, Set<string>> = {} as Record<
+    TCompitionsID,
+    Set<string>
+  >;
+  for (const key in parsed) {
+    result[key as TCompitionsID] = new Set(parsed[key]);
+  }
+  return result;
 }
 
-function saveUsedCodes(codes: Set<string>) {
-  localStorage.setItem("usedCodes", JSON.stringify(Array.from(codes)));
+function saveUsedCodes(codes: Record<TCompitionsID, Set<string>>) {
+  const obj: Record<TCompitionsID, string[]> = {} as Record<
+    TCompitionsID,
+    string[]
+  >;
+  for (const key in codes) {
+    obj[key as TCompitionsID] = Array.from(codes[key as TCompitionsID]);
+  }
+  console.log("obj", obj);
+  localStorage.setItem("usedCodes", JSON.stringify(obj));
 }
+
+export function generateUniqueCode(compition_id: TCompitionsID): string {
+  const compition = compitions.find((c) => c.id === compition_id);
+  if (!compition) return "";
+  console.log("compition", compition_id, usedCodes);
+  const code = Math.floor(
+    1 + Math.random() * compition.participants.length
+  ).toString();
+  if (usedCodes[compition_id].has(code)) {
+    return generateUniqueCode(compition_id);
+  } else {
+    usedCodes[compition_id].add(code);
+    saveUsedCodes(usedCodes);
+    return code;
+  }
+}
+
 export function saveData(data: TParticipant[], key: string) {
   if (!key || typeof window === "undefined") {
     return;

@@ -35,7 +35,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { TParticipant } from "@/utils/types";
+import { TCompitionsID, TParticipant } from "@/utils/types";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import {
   FormControl,
@@ -45,11 +45,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  calculatePosition,
-  generateUniqueCode,
-  saveData,
-} from "@/utils/helper";
+import { calculatePosition, generateUniqueCode } from "@/utils/helper";
+import { useParams } from "next/navigation";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -68,7 +65,8 @@ export function DataTable<TData, TValue>({
   setData,
 }: DataTableProps<TData, TValue>) {
   const t = useTranslations();
-  ``;
+
+  const id = useParams().id;
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const table = useReactTable({
     data,
@@ -208,7 +206,7 @@ export function DataTable<TData, TValue>({
           size='lg'
           onClick={() => {
             if (!selected || selected.code) return;
-            const code = generateUniqueCode();
+            const code = generateUniqueCode(id as TCompitionsID);
             const newData = [...data];
             const index = data.findIndex(
               (item) => (item as TParticipant).id === selected.id
@@ -228,14 +226,20 @@ export function DataTable<TData, TValue>({
         </Button>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button variant='outline' disabled={!selected}>
+            <Button
+              variant='outline'
+              disabled={!selected || selected.code === undefined}
+            >
               {t("edit")}
             </Button>
           </DialogTrigger>
           <DialogContent className='sm:w-full p-8'>
             <DialogHeader>
-              <DialogTitle>{t("edit_score")}</DialogTitle>
-              <DialogDescription>
+              <DialogTitle className='flex justify-center items-center gap-4'>
+                <span>{t("edit_score_description")}</span>
+                <span>{selected?.code}</span>
+              </DialogTitle>
+              <DialogDescription className='flex justify-center items-center gap-4'>
                 {t("edit_score_description")}
               </DialogDescription>
             </DialogHeader>
@@ -256,6 +260,7 @@ export function DataTable<TData, TValue>({
                           type='number'
                           max={20}
                           min={0}
+                          step={0.25}
                           {...field}
                           onChange={(e) =>
                             field.onChange(Number(e.target.value))
@@ -280,6 +285,7 @@ export function DataTable<TData, TValue>({
                           id='written_score'
                           type='number'
                           max={20}
+                          step={0.25}
                           min={0}
                           {...field}
                           onChange={(e) =>
