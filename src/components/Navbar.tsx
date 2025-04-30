@@ -12,10 +12,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { ChevronLeft, ChevronRight, MenuIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight, MenuIcon, RotateCcw } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { usePathname, useParams, useRouter } from "next/navigation";
 import { Button } from "./ui/button";
+import { clearLocalStorage } from "@/utils/helper";
 export function Navbar() {
   const t = useTranslations();
   const { locale, id } = useParams();
@@ -37,6 +38,14 @@ export function Navbar() {
       <div className=' gap-4 items-center  hidden md:flex '>
         <ThemeSwitch />
         <LanguageSwitch />
+        <Button
+          size='icon'
+          variant='outline'
+          onClick={() => clearLocalStorage()}
+          className='flex items-center gap-2'
+        >
+          <RotateCcw />
+        </Button>
         {path !== `/${locale}` && (
           <Button
             variant='ghost'

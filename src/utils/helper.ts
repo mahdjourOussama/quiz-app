@@ -105,3 +105,8 @@ export function clearData(key: string) {
   localStorage.removeItem(key);
   localStorage.removeItem(`${key}_available`);
 }
+
+export function clearLocalStorage() {
+  localStorage.clear();
+  window.location.reload();
+}
