@@ -8,21 +8,6 @@ import { useTranslations } from "next-intl";
 
 export const columns: ColumnDef<TParticipant>[] = [
   {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          className='flex w-full justify-start'
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <TranslatedSpan column={"name"} />
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      );
-    },
-  },
-  {
     accessorKey: "code",
     header: ({ column }) => {
       return (
@@ -32,6 +17,21 @@ export const columns: ColumnDef<TParticipant>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           <TranslatedSpan column={"code"} />
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "name",
+    header: ({ column }) => {
+      return (
+        <Button
+          className='flex w-full justify-start'
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          <TranslatedSpan column={"name"} />
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       );

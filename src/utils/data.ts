@@ -90,6 +90,15 @@ const studentsNames: Record<TCompitionsID, TStudent[]> = {
   ],
 };
 
+const guestStudents: TStudent[] = [
+  { name: "المتسابق (ة) الإضافي 1", school: " المدرسة الإضافية 1" },
+  { name: "المتسابق (ة) الإضافي 2", school: " المدرسة الإضافية 2" },
+  { name: "المتسابق (ة) الإضافي 3", school: " المدرسة الإضافية 3" },
+  { name: "المتسابق (ة) الإضافي 4", school: " المدرسة الإضافية 4" },
+  { name: "المتسابق (ة) الإضافي 5", school: " المدرسة الإضافية 5" },
+  { name: "المتسابق (ة) الإضافي 6", school: " المدرسة الإضافية 6" },
+];
+
 export const compitions: TCompition[] = compitionsNames.map((name) => {
   return {
     title: name,
@@ -98,7 +107,7 @@ export const compitions: TCompition[] = compitionsNames.map((name) => {
     id: name,
     participants:
       loadData(name) ||
-      studentsNames[name].map((student, i) => {
+      studentsNames[name].concat(guestStudents).map((student, i) => {
         return {
           name: student.name,
           school: student.school,
