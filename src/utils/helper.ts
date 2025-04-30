@@ -18,9 +18,9 @@ export function calculatePosition(
       return { ...item, placement: index + 1 };
     });
 }
-const usedCodes: Record<TCompitionsID, Set<string>> = getUsedCodes();
+const usedCodes: Record<TCompitionsID, Set<number>> = getUsedCodes();
 
-function getUsedCodes(): Record<TCompitionsID, Set<string>> {
+function getUsedCodes(): Record<TCompitionsID, Set<number>> {
   const stored = localStorage.getItem("usedCodes");
   if (!stored)
     return {
@@ -32,9 +32,9 @@ function getUsedCodes(): Record<TCompitionsID, Set<string>> {
       hafiz_lokman_lvl3: new Set(),
     };
   const parsed = JSON.parse(stored);
-  const result: Record<TCompitionsID, Set<string>> = {} as Record<
+  const result: Record<TCompitionsID, Set<number>> = {} as Record<
     TCompitionsID,
-    Set<string>
+    Set<number>
   >;
   for (const key in parsed) {
     result[key as TCompitionsID] = new Set(parsed[key]);
@@ -42,10 +42,10 @@ function getUsedCodes(): Record<TCompitionsID, Set<string>> {
   return result;
 }
 
-function saveUsedCodes(codes: Record<TCompitionsID, Set<string>>) {
-  const obj: Record<TCompitionsID, string[]> = {} as Record<
+function saveUsedCodes(codes: Record<TCompitionsID, Set<number>>) {
+  const obj: Record<TCompitionsID, number[]> = {} as Record<
     TCompitionsID,
-    string[]
+    number[]
   >;
   for (const key in codes) {
     obj[key as TCompitionsID] = Array.from(codes[key as TCompitionsID]);
@@ -53,21 +53,33 @@ function saveUsedCodes(codes: Record<TCompitionsID, Set<string>>) {
   console.log("obj", obj);
   localStorage.setItem("usedCodes", JSON.stringify(obj));
 }
-
-export function generateUniqueCode(compition_id: TCompitionsID): string {
+const lastCode: Record<TCompitionsID, number> = getLastCode();
+function getLastCode(): Record<TCompitionsID, number> {
+  const stored = localStorage.getItem("lastCode");
+  if (!stored)
+    return {
+      hafiz_elnour: 0,
+      hafiz_youcef: 0,
+      readers: 0,
+      hafiz_lokman_lvl1: 0,
+      hafiz_lokman_lvl2: 0,
+      hafiz_lokman_lvl3: 0,
+    };
+  return JSON.parse(stored);
+}
+function saveLastCode(codes: Record<TCompitionsID, number>) {
+  localStorage.setItem("lastCode", JSON.stringify(codes));
+}
+export function generateUniqueCode(compition_id: TCompitionsID): number {
   const compition = compitions.find((c) => c.id === compition_id);
-  if (!compition) return "";
+  if (!compition) return 0;
+  if (lastCode[compition_id] > compition.participants.length)
+    return compition.participants.length;
   console.log("compition", compition_id, usedCodes);
-  const code = Math.floor(
-    1 + Math.random() * compition.participants.length
-  ).toString();
-  if (usedCodes[compition_id].has(code)) {
-    return generateUniqueCode(compition_id);
-  } else {
-    usedCodes[compition_id].add(code);
-    saveUsedCodes(usedCodes);
-    return code;
-  }
+  const code = 1 + lastCode[compition_id];
+  lastCode[compition_id] = code;
+  saveLastCode(lastCode);
+  return code;
 }
 
 export function saveData(data: TParticipant[], key: string) {
