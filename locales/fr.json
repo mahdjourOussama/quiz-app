@@ -55,5 +55,6 @@
   "written_score_description": "Note écrite du candidat",
   "score_description": "Note totale du candidat",
   "encrypt": "Chiffrer",
-  "code": "Code"
+  "code": "Code",
+  "ecrypt_description": "Chiffrer les points"
 }

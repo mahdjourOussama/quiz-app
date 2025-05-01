@@ -55,5 +55,6 @@
   "written_score_description": "Contestant's written score",
   "score_description": "Contestant's total score",
   "encrypt": "Encrypt",
-  "code": "Code"
+  "code": "Code",
+  "ecrypt_description": "Encrypt scores"
 }

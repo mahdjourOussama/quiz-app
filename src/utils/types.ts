@@ -12,7 +12,7 @@ export type TParticipant = {
   oral_score: number;
   written_score: number;
   placement: number;
-  code?: string;
+  code?: number;
   school: string;
 };
 export type TStudent = {

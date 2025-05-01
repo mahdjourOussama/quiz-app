@@ -55,5 +55,6 @@
   "written_score_description": "النقاط الكتابية للمتسابق",
   "score_description": "إجمالي النقاط للمتسابق",
   "encrypt": "تشفير",
-  "code": "الشفرة"
+  "code": "الشفرة",
+  "ecrypt_description": "تشفير النقاط"
 }

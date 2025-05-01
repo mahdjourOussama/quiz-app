@@ -57,6 +57,7 @@ type TInputs = {
   oral_score: number;
   written_score: number;
   score: number;
+  code: number;
 };
 export function DataTable<TData, TValue>({
   columns,
@@ -88,6 +89,7 @@ export function DataTable<TData, TValue>({
       oral_score: selected?.oral_score || 0,
       written_score: selected?.written_score || 0,
       score: selected?.score || 0,
+      code: selected?.code,
     },
   });
   const onSubmit: SubmitHandler<TInputs> = (data) => {
@@ -103,6 +105,7 @@ export function DataTable<TData, TValue>({
           oral_score: data.oral_score,
           written_score: data.written_score,
           score: data.score,
+          code: data.code,
         };
       }
 
@@ -126,6 +129,7 @@ export function DataTable<TData, TValue>({
       form.setValue("oral_score", selected.oral_score || 0);
       form.setValue("written_score", selected.written_score || 0);
       form.setValue("score", selected.score || 0);
+      form.setValue("code", selected.code || 0);
     }
   }, [selected, form]);
   return (
@@ -226,10 +230,7 @@ export function DataTable<TData, TValue>({
         </Button>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button
-              variant='outline'
-              disabled={!selected || selected.code === undefined}
-            >
+            <Button variant='outline' disabled={!selected}>
               {t("edit")}
             </Button>
           </DialogTrigger>
@@ -248,6 +249,29 @@ export function DataTable<TData, TValue>({
                 onSubmit={form.handleSubmit(onSubmit)}
                 className='grid gap-4'
               >
+                <FormField
+                  control={form.control}
+                  name='code'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("code")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          id='code'
+                          type='number'
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        {t("ecrypt_description")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name='oral_score'
